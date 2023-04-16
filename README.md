@@ -1,8 +1,5 @@
 # chdb-docker
-chDB Docker container.
-
-- Flask HTTP API
-- chDB query runner
+[chDB](https://github.com/auxten/chdb) in a docker container.
 
 ### Do not use this
 Use ClickHouse server instead. This is just a slow hack for testing.
