@@ -1,2 +1,5 @@
 # chdb-docker
-chDB Docker Container
+chDB Docker container for fun and testing.
+
+- Flask HTTP API
+- chDB query runner
