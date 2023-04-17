@@ -3,3 +3,7 @@
 
 ### Do not use this
 Use ClickHouse server instead. This is just a slow hack for testing.
+
+```
+docker run --rm -p 8123:8123 ghcr.io/metrico/chdb-docker:latest
+```
