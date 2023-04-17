@@ -1,4 +1,6 @@
-<img src="https://user-images.githubusercontent.com/1423657/232499885-26f6a649-74e4-439c-8cf6-555049b8dfbf.png" width=200 />
+<img src="https://user-images.githubusercontent.com/1423657/232509110-5a761443-88ab-4872-889c-919d4662890b.png" width=190 />
+
+
 
 # chdb-docker
 [chDB](https://github.com/auxten/chdb) in a docker container.
