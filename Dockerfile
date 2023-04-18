@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 ENV VERSION 0.6.0
-RUN apt update && apt install -y python3-minimal python3-pip && rm -rf /var/lib/{apt,dpkg,cache,log}/
-RUN pip install chdb Flask && strip /usr/local/lib/python3.8/dist-packages/chdb/_chdb*.so
+RUN apt update && apt install -y python3-minimal python3-pip && rm -rf /var/lib/apt/lists/*
+RUN pip install chdb Flask && strip /usr/local/lib/python3.8/dist-packages/chdb/_chdb*.so && rm -rf ~/.cache/pip/* 
 WORKDIR /app
 ADD main.py .
 ADD public ./public
