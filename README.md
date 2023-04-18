@@ -7,3 +7,5 @@
 ```
 docker run --rm -p 8123:8123 ghcr.io/metrico/chdb-docker:latest
 ```
+
+![image](https://user-images.githubusercontent.com/1423657/232862594-21bacfb1-e4f3-467f-a409-5d4f6a62ab4b.png)
