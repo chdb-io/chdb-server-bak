@@ -1,5 +1,6 @@
 from flask import Flask, request
 import chdb
+import os
 
 app = Flask(__name__, static_folder="public", static_url_path="")
 
@@ -27,4 +28,6 @@ def play():
 def handle_404(e):
     return app.send_static_file('play.html')
 
-app.run(host="0.0.0.0", port=8123)
+host = os.getenv('HOST', '0.0.0.0')
+port = os.getenv('PORT', 8123)
+app.run(host=host, port=port)
