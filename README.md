@@ -2,7 +2,7 @@
   <img src="https://user-images.githubusercontent.com/1423657/232511039-480548f7-2e51-4a33-949b-15e0a2a79d9c.png" width=190 />
 </a>
 
-# chdb-docker
+# chdb-server
 [chDB](https://github.com/auxten/chdb) + basic API server in a docker container, for hacking and testing.
 
 ### Do not use this
