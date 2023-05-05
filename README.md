@@ -5,9 +5,17 @@
 [![.github/workflows/release.yml](https://github.com/chdb-io/chdb-server/actions/workflows/release.yml/badge.svg)](https://github.com/chdb-io/chdb-server/actions/workflows/release.yml)
 
 # chdb-server
-[chDB](https://github.com/auxten/chdb) + basic API server in a docker container, for hacking and testing.
+[chDB](https://github.com/auxten/chdb) + basic API server in a docker container, for fast testing and feature validation.
 
-### Docker Demo 
+<br>
+
+<a href="https://flyctl.sh/shell?repo=chdb-io/chdb-server" target="_blank">
+  <img src="https://user-images.githubusercontent.com/1423657/236479471-a1cb0484-dfd3-4dc2-8d62-121debd7faa3.png" width=300>
+</a>
+
+<br><br>
+
+### Docker Demo
 ```
 docker run --rm -p 8123:8123 ghcr.io/chdb-io/chdb-server:latest
 ```
