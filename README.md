@@ -7,6 +7,9 @@
 # chdb-server
 [chDB](https://github.com/auxten/chdb) + basic API server in a docker container, for fast testing and feature validation.
 
+### [Public Demo](https://chdb.fly.dev/)
+
+
 <br>
 
 <a href="https://flyctl.sh/shell?repo=chdb-io/chdb-server" target="_blank">
