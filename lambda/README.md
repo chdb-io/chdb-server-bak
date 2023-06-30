@@ -8,8 +8,8 @@
 
 > Let's run chdb in a lambda function for fun a profit!
 
-## Local Image Test
-Build and run the Lambda locally:
+## Local Lambda  Test
+Build and run the Lambda chdb container locally:
 ```
 docker build -t chdb:lambda
 docker run -p 9000:8080 chdb:lambda
@@ -17,9 +17,11 @@ docker run -p 9000:8080 chdb:lambda
 
 Validate the API using curl
 ```
-curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"query":"SELECT version()", "default_format":"JSONCompact"}'
+curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" \
+     -d '{"query":"SELECT version()", "default_format":"JSONCompact"}'
 ```
 
+<br>
 
 ## Upload Docker image on ECR and Lambda
 Lambda function continers must be hosted on the AWS Elastic Container Registry.
