@@ -43,7 +43,7 @@ $ ./deploy.sh
 
 4. Create Lambda function and attach your ECR Image. Make sure the name and image ID match:
 
-![image](https://github.com/chdb-io/chdb-server/assets/1423657/2223f6b6-6b76-423d-bf81-34394c361293)
+![image](https://github.com/chdb-io/chdb-server/assets/1423657/887894c3-35ef-4083-a4b8-29d247f1fc1c)
 
 
 6. Test your Lambda function with a JSON payload:
