@@ -1,8 +1,12 @@
-# chDB on AWS Lambda
+<a href="https://chdb.fly.dev" target="_blank">
+  <img src="https://user-images.githubusercontent.com/1423657/236688026-812c5d02-ddcc-4726-baf8-c7fe804c0046.png" width=130 />
+</a>
 
-> Running chdb in a lambda function for fun a profit!
+[![.github/workflows/release.yml](https://github.com/chdb-io/chdb-server/actions/workflows/release.yml/badge.svg)](https://github.com/chdb-io/chdb-server/actions/workflows/release.yml)
 
-This guide is based on [this article](https://medium.com/@skalyani103/python-on-aws-lambda-using-docker-images-5740664c54ca)
+# chDB AWS Lambda Function
+
+> Let's run chdb in a lambda function for fun a profit!
 
 ## Upload Docker image on ECR and Lambda
 Lambda function continers must be hosted on the AWS Elastic Container Registry.
@@ -22,7 +26,23 @@ $ aws configure
 $ ./deploy.sh
 ```
 
-4. Create Lambda function and attach your ECR Image
+4. Create Lambda function and attach your ECR Image. Make sure the name and image ID match:
 
-5. Test your Lambda function:
+![image](https://github.com/chdb-io/chdb-server/assets/1423657/2223f6b6-6b76-423d-bf81-34394c361293)
+
+
+6. Test your Lambda function with a JSON payload:
+
+![image](https://github.com/chdb-io/chdb-server/assets/1423657/daa26b0b-68e2-4cec-b665-5505efe99b99)
+
+```json
+{
+  "query": "SELECT version();",
+  "default_format": "JSONCompact"
+}
+```
+
+-----
+
+This guide is based on [this article](https://medium.com/@skalyani103/python-on-aws-lambda-using-docker-images-5740664c54ca) which contains further details and steps.
 
