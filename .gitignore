@@ -1,0 +1,12 @@
+# ---> Python
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*$py.class
+
+# ---> IDE
+.vscode/*
+.idea/
+
+# ---> venv
+venv/
+env/
