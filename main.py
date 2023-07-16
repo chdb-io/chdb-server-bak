@@ -41,7 +41,7 @@ def clickhouse():
         return app.send_static_file('play.html')
 
     result, errmsg = chdb_query_with_errmsg(query, format)
-    if errmsg != '':
+    if errmsg == '':
         return result
     else:
         return errmsg
