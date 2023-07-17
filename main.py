@@ -1,5 +1,5 @@
 import os
-import select
+import tempfile
 
 import chdb
 from flask import Flask, request
@@ -7,31 +7,28 @@ from flask import Flask, request
 app = Flask(__name__, static_folder="public", static_url_path="")
 
 
+# run chdb.query(query, format), get result from return and collect stderr
 def chdb_query_with_errmsg(query, format):
-    pipe_out, pipe_in = os.pipe()
-    stderr = os.dup(2)
-    os.dup2(pipe_in, 2)
-
-    # check if we have more to read from the pipe
-    def more_data():
-        r, _, _ = select.select([pipe_out], [], [], 0)
-        return bool(r)
-
-    # read the whole pipe
-    def read_pipe():
-        out = b''
-        while more_data():
-            out += os.read(pipe_out, 1024)
-
-        return out.decode(encoding='utf-8', errors='strict')
-
-    res = chdb.query(query, format)
-    os.dup2(stderr, 2)
-
-    result = res.get_memview().tobytes()
-    errmsg = read_pipe()
-    return result, errmsg
-
+    # Redirect stdout and stderr to the buffers
+    try:
+        new_stderr = tempfile.TemporaryFile()
+        old_stderr_fd = os.dup(2)
+        os.dup2(new_stderr.fileno(), 2)
+        # Call the function
+        output = chdb.query(query, format).bytes()
+        
+        new_stderr.flush()
+        new_stderr.seek(0)
+        errmsg = new_stderr.read()
+        
+        # cleanup and recover
+        new_stderr.close()
+        os.dup2(old_stderr_fd, 2)
+    except Exception as e:
+        # An error occurred, print it to stderr
+        print(f"An error occurred: {e}")
+    return output, errmsg
+    
 
 @app.route('/', methods=["GET"])
 def clickhouse():
@@ -41,10 +38,9 @@ def clickhouse():
         return app.send_static_file('play.html')
 
     result, errmsg = chdb_query_with_errmsg(query, format)
-    if errmsg == '':
+    if len(errmsg) == 0:
         return result
-    else:
-        return errmsg
+    return errmsg
 
 
 @app.route('/', methods=["POST"])
@@ -55,10 +51,9 @@ def play():
         return app.send_static_file('play.html')
 
     result, errmsg = chdb_query_with_errmsg(query, format)
-    if errmsg == '':
+    if len(errmsg) == 0:
         return result
-    else:
-        return errmsg
+    return errmsg
 
 
 @app.errorhandler(404)
