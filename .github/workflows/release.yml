@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./fly
+        working-directory: fly
     needs: [ releases-matrix ]
     steps:
     - uses: superfly/flyctl-actions/setup-flyctl@master
