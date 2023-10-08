@@ -7,6 +7,9 @@
 # chdb-server
 [chDB](https://github.com/auxten/chdb) + basic API server in a docker container, for fast testing and feature validation.
 
+> chdb-server queries default to stateless. Stateful sessions can be generated with Basic HTTP Auth.
+
+
 ### [Public Demo](https://chdb.fly.dev/)
 
 
@@ -17,6 +20,7 @@
 </a>
 
 <br><br>
+
 
 ### Docker Demo
 ```
