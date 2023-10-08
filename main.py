@@ -51,8 +51,8 @@ def clickhouse():
     query = request.args.get('query', default="", type=str)
     format = request.args.get('default_format', default="TSV", type=str)
     if not query:
-        return "Ok", 200
-#       return app.send_static_file('play.html')
+#       return "Ok", 200
+        return app.send_static_file('play.html')
 
     result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
