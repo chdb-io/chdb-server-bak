@@ -9,8 +9,11 @@
 
 > chdb-server queries default to stateless. Stateful sessions can be generated with Basic HTTP Auth.
 
+![image](https://github.com/chdb-io/chdb-server/assets/1423657/dee938a2-ec2a-4b4a-87a9-458a6db791a0)
 
-### [Public Demo](https://chdb.fly.dev/)
+
+
+### [Play with Public Demo](https://chdb.fly.dev/)
 
 
 <br>
