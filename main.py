@@ -51,8 +51,8 @@ def clickhouse():
     query = request.args.get('query', default="", type=str)
     format = request.args.get('default_format', default="TSV", type=str)
     if not query:
-        return "Ok",200
-#        return app.send_static_file('play.html')
+        return "Ok", 200
+#       return app.send_static_file('play.html')
 
     result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
@@ -66,8 +66,8 @@ def play():
     query = request.data or None
     format = request.args.get('default_format', default="TSV", type=str)
     if not query:
-        return "Ok",200
-#        return app.send_static_file('play.html')
+        return "Ok", 200
+#       return app.send_static_file('play.html')
 
     result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
@@ -85,8 +85,7 @@ def handle_ping():
 
 @app.errorhandler(404)
 def handle_404(e):
-    return "Not Found", 404
-#    return app.send_static_file('play.html')
+    return app.send_static_file('play.html')
 
 
 host = os.getenv('HOST', '0.0.0.0')
