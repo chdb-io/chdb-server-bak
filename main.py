@@ -49,9 +49,10 @@ def chdb_query_with_errmsg(query, format):
 @auth.login_required
 def clickhouse():
     query = request.args.get('query', default="", type=str)
-    format = request.args.get('default_format', default="CSV", type=str)
+    format = request.args.get('default_format', default="TSV", type=str)
     if not query:
-        return app.send_static_file('play.html')
+        return "Ok", 200
+#       return app.send_static_file('play.html')
 
     result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
@@ -62,16 +63,25 @@ def clickhouse():
 @app.route('/', methods=["POST"])
 @auth.login_required
 def play():
-    query = request.data
-    format = request.args.get('default_format', default="CSV", type=str)
+    query = request.data or None
+    format = request.args.get('default_format', default="TSV", type=str)
     if not query:
-        return app.send_static_file('play.html')
+        return "Ok", 200
+#       return app.send_static_file('play.html')
 
     result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
         return result
     return errmsg
 
+
+@app.route('/play', methods=["GET"])
+def handle_play():
+    return app.send_static_file('play.html')
+
+@app.route('/ping', methods=["GET"])
+def handle_ping():
+    return "Ok", 200
 
 @app.errorhandler(404)
 def handle_404(e):
