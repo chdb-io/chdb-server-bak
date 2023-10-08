@@ -2,10 +2,25 @@ import os
 import tempfile
 
 import chdb
+from chdb import session as chs
 from flask import Flask, request
+from flask_httpauth import HTTPBasicAuth
 
 app = Flask(__name__, static_folder="public", static_url_path="")
+auth = HTTPBasicAuth()
+driver = chdb
 
+# session support: basic username + password as unique datapath
+@auth.verify_password
+def verify(username, password):
+    if not (username and password):
+        print('stateless session')
+        globals()["driver"] = chdb
+    else:
+        path = globals()["path"] + "/" + str(hash(username + password))
+        print('stateful session ' + path)
+        globals()["driver"] = chs.Session(path)
+    return True
 
 # run chdb.query(query, format), get result from return and collect stderr
 def chdb_query_with_errmsg(query, format):
@@ -15,7 +30,7 @@ def chdb_query_with_errmsg(query, format):
         old_stderr_fd = os.dup(2)
         os.dup2(new_stderr.fileno(), 2)
         # Call the function
-        output = chdb.query(query, format).bytes()
+        output = driver.query(query, format).bytes()
         
         new_stderr.flush()
         new_stderr.seek(0)
@@ -31,6 +46,7 @@ def chdb_query_with_errmsg(query, format):
     
 
 @app.route('/', methods=["GET"])
+@auth.login_required
 def clickhouse():
     query = request.args.get('query', default="", type=str)
     format = request.args.get('default_format', default="CSV", type=str)
@@ -44,6 +60,7 @@ def clickhouse():
 
 
 @app.route('/', methods=["POST"])
+@auth.login_required
 def play():
     query = request.data
     format = request.args.get('default_format', default="CSV", type=str)
@@ -63,4 +80,5 @@ def handle_404(e):
 
 host = os.getenv('HOST', '0.0.0.0')
 port = os.getenv('PORT', 8123)
+path = os.getenv('DATA', '.chdb_data')
 app.run(host=host, port=port)
