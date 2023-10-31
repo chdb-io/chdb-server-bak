@@ -53,14 +53,13 @@ def clickhouse():
     if not query:
         return app.send_static_file('play.html')
 
-   if database:
+    if database:
         query = f"USE {database}; {query}".encode()
 
     result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
         return result
     return errmsg
-
 
 @app.route('/', methods=["POST"])
 @auth.login_required
