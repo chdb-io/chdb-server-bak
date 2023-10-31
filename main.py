@@ -31,11 +31,11 @@ def chdb_query_with_errmsg(query, format):
         os.dup2(new_stderr.fileno(), 2)
         # Call the function
         output = driver.query(query, format).bytes()
-        
+
         new_stderr.flush()
         new_stderr.seek(0)
         errmsg = new_stderr.read()
-        
+
         # cleanup and recover
         new_stderr.close()
         os.dup2(old_stderr_fd, 2)
@@ -43,18 +43,20 @@ def chdb_query_with_errmsg(query, format):
         # An error occurred, print it to stderr
         print(f"An error occurred: {e}")
     return output, errmsg
-    
 
 @app.route('/', methods=["GET"])
 @auth.login_required
 def clickhouse():
     query = request.args.get('query', default="", type=str)
     format = request.args.get('default_format', default="TSV", type=str)
+    database = request.args.get('database', default="", type=str)
     if not query:
-#       return "Ok", 200
         return app.send_static_file('play.html')
 
-    result, errmsg = chdb_query_with_errmsg(query, format)
+    if database:
+        database = "USE " + database + "; "
+
+    result, errmsg = chdb_query_with_errmsg(database + query, format)
     if len(errmsg) == 0:
         return result
     return errmsg
@@ -65,11 +67,14 @@ def clickhouse():
 def play():
     query = request.data or None
     format = request.args.get('default_format', default="TSV", type=str)
+    database = request.args.get('database', default="", type=str)
     if not query:
         return "Ok", 200
-#       return app.send_static_file('play.html')
 
-    result, errmsg = chdb_query_with_errmsg(query, format)
+    if database:
+        database = "USE " + database + "; "
+
+    result, errmsg = chdb_query_with_errmsg(database + query, format)
     if len(errmsg) == 0:
         return result
     return errmsg
