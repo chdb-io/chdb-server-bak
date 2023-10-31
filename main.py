@@ -54,7 +54,7 @@ def clickhouse():
         return app.send_static_file('play.html')
 
     if database:
-        database = "USE " + database + "; "
+        database = f"USE {database}; "
 
     result, errmsg = chdb_query_with_errmsg(database + query, format)
     if len(errmsg) == 0:
@@ -72,7 +72,7 @@ def play():
         return "Ok", 200
 
     if database:
-        database = "USE " + database + "; "
+        database = f"USE {database}; ".encode()
 
     result, errmsg = chdb_query_with_errmsg(database + query, format)
     if len(errmsg) == 0:
@@ -91,7 +91,6 @@ def handle_ping():
 @app.errorhandler(404)
 def handle_404(e):
     return app.send_static_file('play.html')
-
 
 host = os.getenv('HOST', '0.0.0.0')
 port = os.getenv('PORT', 8123)
