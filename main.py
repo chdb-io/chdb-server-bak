@@ -61,7 +61,6 @@ def clickhouse():
         return result
     return errmsg
 
-
 @app.route('/', methods=["POST"])
 @auth.login_required
 def play():
