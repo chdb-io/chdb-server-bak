@@ -53,10 +53,10 @@ def clickhouse():
     if not query:
         return app.send_static_file('play.html')
 
-    if database:
-        database = f"USE {database}; "
+   if database:
+        query = f"USE {database}; {query}".encode()
 
-    result, errmsg = chdb_query_with_errmsg(database + query, format)
+    result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
         return result
     return errmsg
@@ -73,8 +73,9 @@ def play():
 
     if database:
         database = f"USE {database}; ".encode()
+        query = database + query
 
-    result, errmsg = chdb_query_with_errmsg(database + query, format)
+    result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
         return result
     return errmsg
