@@ -64,7 +64,7 @@ def clickhouse():
 @app.route('/', methods=["POST"])
 @auth.login_required
 def play():
-    query = request.data or None
+    query = request.get_data() or None
     format = request.args.get('default_format', default="TSV", type=str)
     database = request.args.get('database', default="", type=str)
     if not query:
