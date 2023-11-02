@@ -58,8 +58,8 @@ def clickhouse():
 
     result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
-        return result
-    return errmsg
+        return result, 200
+    return errmsg, 400
 
 @app.route('/', methods=["POST"])
 @auth.login_required
@@ -76,8 +76,8 @@ def play():
 
     result, errmsg = chdb_query_with_errmsg(query, format)
     if len(errmsg) == 0:
-        return result
-    return errmsg
+        return result, 200
+    return errmsg, 400
 
 
 @app.route('/play', methods=["GET"])
