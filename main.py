@@ -56,7 +56,7 @@ def clickhouse():
     if database:
         query = f"USE {database}; {query}".encode()
 
-    result, errmsg = chdb_query_with_errmsg(query, format)
+    result, errmsg = chdb_query_with_errmsg(query.strip(), format)
     if len(errmsg) == 0:
         return result, 200
     return errmsg, 400
@@ -83,7 +83,7 @@ def play():
         database = f"USE {database}; ".encode()
         query = database + query
 
-    result, errmsg = chdb_query_with_errmsg(query, format)
+    result, errmsg = chdb_query_with_errmsg(query.strip(), format)
     if len(errmsg) == 0:
         return result, 200
     return errmsg, 400
