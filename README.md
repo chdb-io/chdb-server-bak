@@ -5,9 +5,13 @@
 [![.github/workflows/release.yml](https://github.com/chdb-io/chdb-server/actions/workflows/release.yml/badge.svg)](https://github.com/chdb-io/chdb-server/actions/workflows/release.yml)
 
 # chdb-server
-[chDB](https://github.com/auxten/chdb) + basic API server in a docker container, for fast testing and feature validation.
+[chDB](https://github.com/auxten/chdb) + basic HTTP/s API server in a docker container, _pretending to be ClickHouse_
 
-> chdb-server queries default to stateless. Stateful sessions can be generated with Basic HTTP Auth.
+<br>
+
+#### Stateless & Stateful Sessions
+
+> chdb-server queries default to stateless. Stateful sessions can be paired with Basic HTTP Auth.
 
 ![image](https://github.com/chdb-io/chdb-server/assets/1423657/dee938a2-ec2a-4b4a-87a9-458a6db791a0)
 
