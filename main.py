@@ -64,18 +64,18 @@ def clickhouse():
 @app.route('/', methods=["POST"])
 @auth.login_required
 def play():
-    query = request.get_data() or None
-    query_param = request.args.get('query', default="", type=str)
+    query = request.args.get('query', default=None, type=str)
+    body = request.get_data() or None
     format = request.args.get('default_format', default="TSV", type=str)
     database = request.args.get('database', default="", type=str)
 
-    if not query and query_param:
-        query = f"{query_param}".encode()
+    if query is None:
+        query = b""
+    else:
+        query = bytes(query)
+    if body is not None:
+        query = query + body
 
-    elif query and query_param:
-        query_param = f"{query_param} ".encode()
-        query = query_param + query
-    
     if not query:
         return "Error: no query parameter provided", 400
 
