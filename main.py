@@ -72,9 +72,9 @@ def play():
     if query is None:
         query = b""
     else:
-        query = bytes(query)
+        query = query.encode('utf-8')
     if body is not None:
-        query = query + body
+        query = query + "\n".encode('utf-8') + body
 
     if not query:
         return "Error: no query parameter provided", 400
