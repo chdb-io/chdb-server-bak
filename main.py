@@ -75,6 +75,7 @@ def play():
         query = query.encode('utf-8')
 
     if body is not None:
+        # temporary hack to flatten multilines. to be replaced with raw `--file` input
         data = f""
         request_lines = body.decode('utf-8').strip().splitlines(True)
         for line in request_lines:
@@ -91,6 +92,9 @@ def play():
 
     result, errmsg = chdb_query_with_errmsg(query.strip(), format)
     if len(errmsg) == 0:
+        return result, 200
+    if len(result) > 0:
+        print("warning:", errmsg)
         return result, 200
     return errmsg, 400
 
