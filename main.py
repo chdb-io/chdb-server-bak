@@ -82,7 +82,7 @@ def play():
         data = f""
         request_lines = body.decode('utf-8').strip().splitlines(True)
         for line in request_lines:
-           data += line.strip()
+           data += " " + line.strip()
         body = data.encode('utf-8')
         query = query + " ".encode('utf-8') + body
 
