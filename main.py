@@ -59,6 +59,9 @@ def clickhouse():
     result, errmsg = chdb_query_with_errmsg(query.strip(), format)
     if len(errmsg) == 0:
         return result, 200
+    if len(result) > 0:
+        print("warning:", errmsg)
+        return result, 200
     return errmsg, 400
 
 @app.route('/', methods=["POST"])
