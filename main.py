@@ -1,6 +1,7 @@
 import os
 import sys
 import tempfile
+import hashlib
 
 import chdb
 from chdb import session as chs
@@ -18,7 +19,8 @@ def verify(username, password):
         # print('stateless session')
         globals()["driver"] = chdb
     else:
-        path = globals()["path"] + "/" + str(username)
+        hash = hashlib.md5(str(username + password).encode('utf-8')).hexdigest()
+        path = globals()["path"] + "/" + str(hash)
         # print('stateful session ' + path)
         globals()["driver"] = chs.Session(path)
     return True
@@ -28,12 +30,10 @@ def chdb_query_with_errmsg(query, format, data=None):
     output = ""
     errmsg = ""
     try:
-        # Redirect stderr to a temporary file
         stderr_tempfile = tempfile.TemporaryFile()
         old_stderr_fd = os.dup(2)
         os.dup2(stderr_tempfile.fileno(), 2)
 
-        # Redirect stdin to a temporary file if data is provided
         if data is not None and query is not None:
             stdin_tempfile = tempfile.NamedTemporaryFile()
             # print(stdin_tempfile.name)
@@ -42,10 +42,8 @@ def chdb_query_with_errmsg(query, format, data=None):
             stdin_tempfile.write(data)
             stdin_tempfile.seek(0)
 
-        # Call the function
         output = driver.query(query, format).bytes()
 
-        # Capture stderr output
         stderr_tempfile.flush()
         stderr_tempfile.seek(0)
         errmsg = stderr_tempfile.read()
@@ -54,7 +52,6 @@ def chdb_query_with_errmsg(query, format, data=None):
         errmsg = str(e)
 
     finally:
-        # Cleanup and recover file descriptors
         os.dup2(old_stderr_fd, 2)
         stderr_tempfile.close()
         if data is not None:
@@ -73,7 +70,8 @@ def clickhouse():
         return app.send_static_file('play.html')
 
     if database:
-        query = f"USE {database}; {query}".encode()
+        use = f"USE {database};".encode()
+        chdb_query_with_errmsg(use.strip(), format)
 
     result, errmsg = chdb_query_with_errmsg(query.strip(), format)
     if len(errmsg) == 0:
@@ -82,6 +80,7 @@ def clickhouse():
         print("warning:", errmsg)
         return result, 200
     else:
+        print("error:", errmsg)
         return errmsg, 400
 
 @app.route('/', methods=["POST"])
@@ -112,8 +111,8 @@ def play():
         return "Error: no query parameter provided", 400
 
     if database:
-        database = f"USE {database}; ".encode()
-        query = database + query
+        use = f"USE {database};".encode()
+        chdb_query_with_errmsg(use.strip(), format)
 
     result, errmsg = chdb_query_with_errmsg(query.strip(), format, data)
     if len(errmsg) == 0:
